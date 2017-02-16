@@ -1,3 +1,5 @@
+packrat::on()
+packrat::restore()
 sessionInfo()
 installed.packages()
 rmarkdown::render("README.Rmd", output_format = rmarkdown::github_document(), output_dir="docs")
