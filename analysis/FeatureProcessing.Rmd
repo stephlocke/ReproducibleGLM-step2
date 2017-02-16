@@ -6,6 +6,20 @@ output: html_document
 ---
 Now that we have our data split into two sections, we can start processing features.
 
+## Our outcome variable
+Some stats packages don't like booleans, others don't like factor labels with spaces. Let's process our outcome variable and put it at the end of the data.frame, as is also expected.
+
+```{r survived}
+convertsurvived<-function(x) {
+  factor(x,levels = c("0","1")
+         ,labels=c("Died","Survived")
+  )}
+                             
+survived_tr <- convertsurvived(titanic_train_c$survived)
+titanic_train_c$survived<-NULL
+titanic_train_c$survived<-survived_tr
+```
+
 ## Factors
 In some cases with strings, if you want to make these a categorical variable, you need to make sure to incorporate levels from both sets of data.
 
@@ -43,6 +57,7 @@ prop.table(table(titanic_train_c$embarked,  titanic_train_c$survived),1)
 
 ```{r remove}
 titanic_train_c$name <- NULL
+titanic_train_c$ticket <- NULL
 
 # Note this could be different if we wanted to geocode and then further categorise this variable
 titanic_train_c$home.dest<-NULL
@@ -51,7 +66,58 @@ titanic_train_c$home.dest<-NULL
 titanic_train_c$boat<-NULL
 ```
 
+## Missings
+```{r missings}
+library(Amelia)
+missmap(titanic_train_c)
+```
+
+Looking at the data dictionary (`?titanic3`), the column `body` represents a number associated with a retrieved dead body. That would of course be correlated with not surviving so let's remove it!
+
+```{r body}
+titanic_train_c$body<-NULL
+```
+
+Age has a fairly high degree of missingness (`r paste0(round(sum(is.na(titanic_train_c$age))/nrow(titanic_train_c),3)*100)`). 
+
+The sample size is small and removing these records would further decrease our data, an undesirable course of action.
+
+The small sample size also means that imputing values by using a subset of data to predict missings would require using the same data, causing overfitting to creep in.
+
+Utilising the average value, is also not a particularly good way to go.
+
+Removing the column would substantially reduce our number of features also.
+
+We should see if converting the converting the continuous variable to a binned variable, and the addition of an "NA" category will yield substantial information. This will lose precision on ages where provided but increases the amount of observations and features overall.
+
+```{r binningages}
+library(smbinning)
+alt_titanic_train_c<-titanic_train_c[,c("survived","age")]
+alt_titanic_train_c$survivedbool<-unclass(alt_titanic_train_c$survived)-1
+binnings<-smbinning::smbinning(alt_titanic_train_c,"survivedbool","age")
+binnings$ivtable
+titanic_train_c$age<-smbinning.gen(alt_titanic_train_c,binnings,"Age2")$Age2
+```
+ 
+## Processing numbers
+We should scale numbers so that values are on similar scales to prevent individual variables overpowering the model.
+
+```{r processnumbers}
+procVar<-caret::preProcess(titanic_train_c)
+titanic_train_c<-predict(procVar, titanic_train_c)
+
+knitr::kable(summary(titanic_train_c))
+```
+
+## Applying to test samples
+
+Once processed for our training, we should apply changes to our test data. Consolidating transformations like this allows us to think about our production requirements in relation to the data.
+
 ```{r testcolumns}
+survived_t <- convertsurvived(titanic_test_c$survived)
+titanic_test_c$survived<-NULL
+titanic_test_c$survived<-survived_t
+
 titanic_test_c$pclass <- convertclass(titanic_test_c$pclass )
 titanic_test_c$sex <- convertsex(titanic_test_c$sex)
 titanic_test_c$cabin<-convertcabin(titanic_test_c$cabin)
@@ -59,4 +125,14 @@ titanic_test_c$embarked<-convertembarked(titanic_test_c$embarked)
 titanic_test_c$name <- NULL
 titanic_test_c$home.dest <- NULL
 titanic_test_c$boat <- NULL
+titanic_test_c$ticket <- NULL
+titanic_train_c$body<-NULL
+
+alt_titanic_test_c<-titanic_test_c[,c("survived","age")]
+alt_titanic_test_c$survivedbool<-unclass(alt_titanic_test_c$survived)-1
+titanic_test_c$age<-smbinning.gen(alt_titanic_test_c,binnings,"Age2")$Age2
+
+titanic_test_c<-predict(procVar, titanic_test_c)
+
+summary(titanic_test_c)
 ```
