@@ -6,22 +6,57 @@ output: html_document
 ---
 Now that we have our data split into two sections, we can start processing features.
 
+## Factors
 In some cases with strings, if you want to make these a categorical variable, you need to make sure to incorporate levels from both sets of data.
 
 ```{r whatstrings}
 stringcols<- sapply(titanic_train_c, is.character)
-titanic_train_c[,stringcols]
+lapply(titanic_train_c[,stringcols],function(x) head(unique(x)))
 ```
 
 ```{r processclass}
 convertclass<-function(x){ ordered(x , labels=c("3rd","2nd","1st"), levels=c("3rd","2nd","1st"))}
+
 titanic_train_c$pclass <- convertclass(titanic_train_c$pclass )
-titanic_test_c$pclass <- convertclass(titanic_test_c$pclass )
-summary(titanic_train_c$pclass)
-summary(titanic_test_c$pclass)
+
+prop.table(table(titanic_train_c$pclass,  titanic_train_c$survived),margin = 1)
 ```
 
-```{r processname}
+```{r sex}
+convertsex<-function(x) factor(x, labels=c("male","female"))
+titanic_train_c$sex <- convertsex(titanic_train_c$sex)
+prop.table(table(titanic_train_c$sex,  titanic_train_c$survived),1)
+```
+
+```{r cabin}
+convertcabin<-function(x){factor(substr(x,1,1),levels=c("",LETTERS[1:7],"T")) }
+titanic_train_c$cabin<-convertcabin(titanic_train_c$cabin)
+prop.table(table(titanic_train_c$cabin,  titanic_train_c$survived),1)
+```
+
+```{r embarked}
+convertembarked<-function(x){factor(x,levels = c("Southampton","Cherbourg" , "Queenstown" ))}
+titanic_train_c$embarked<-convertembarked(titanic_train_c$embarked)
+prop.table(table(titanic_train_c$embarked,  titanic_train_c$survived),1)
+```
+
+
+```{r remove}
 titanic_train_c$name <- NULL
+
+# Note this could be different if we wanted to geocode and then further categorise this variable
+titanic_train_c$home.dest<-NULL
+
+# Boat appears to have too many values to be useful
+titanic_train_c$boat<-NULL
+```
+
+```{r testcolumns}
+titanic_test_c$pclass <- convertclass(titanic_test_c$pclass )
+titanic_test_c$sex <- convertsex(titanic_test_c$sex)
+titanic_test_c$cabin<-convertcabin(titanic_test_c$cabin)
+titanic_test_c$embarked<-convertembarked(titanic_test_c$embarked)
 titanic_test_c$name <- NULL
+titanic_test_c$home.dest <- NULL
+titanic_test_c$boat <- NULL
 ```
