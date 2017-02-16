@@ -1,0 +1,16 @@
+---
+title: "Full Model Docs"
+author: "Steph Locke"
+date: "16 February 2017"
+output: word_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r datacollection, child="../analysis/DataCollection.Rmd"}
+```
+
+```{r datasampling, child="../analysis/DataSampling.Rmd"}
+```

@@ -1,0 +1,118 @@
+---
+title: "Data sampling"
+author: "Steph Locke"
+date: "15 February 2017"
+output: html_document
+---
+
+We want to split our data into a training and a test sample for predicting survival of the Titanic. There are two sampling strategies we'll consider here. 
+
+## Random sample
+```{r usingsample}
+n_titanic_all<-nrow(titanic_all)
+prop_train<-0.7
+n_train<-floor(prop_train * n_titanic_all)
+
+# Sample RowIDs
+rows_train_s<-sample.int(n_titanic_all, n_train)
+
+titanic_train_s<-titanic_all[rows_train_s,]
+titanic_test_s<-titanic_all[-rows_train_s,]
+```
+
+### Class Distribution
+```{r usingsample_class}
+pval<-t.test(titanic_train_s$survived, titanic_test_s$survived, conf.level = .95)$p.value 
+pval
+t.test(titanic_train_s$survived, titanic_test_s$survived, conf.level = .95)$p.value >= .05
+```
+
+#### How often would they be sufficiently similar?
+```{r samplerep}
+pass_ttest<-function(x, prop_train = .07){
+  n_x_all<-length(x)
+  n_train<-floor(prop_train * n_x_all)
+  
+  # Sample RowIDs
+  rows_train<-sample.int(n_x_all, n_train)
+  
+  t.test(x[rows_train], x[-rows_train], conf.level = .95)$p.value >= .05
+}
+
+sum(replicate(1000,pass_ttest(titanic_all$survived)))/1000
+```
+
+#### How do we get the same sample every time?
+```{r setseed}
+pass_ttest<-function(x, prop_train = .07){
+  set.seed(6767)
+  n_x_all<-length(x)
+  n_train<-floor(prop_train * n_x_all)
+  
+  # Sample RowIDs
+  rows_train<-sample.int(n_x_all, n_train)
+  
+  t.test(x[rows_train], x[-rows_train], conf.level = .95)$p.value >= .05
+}
+
+sum(replicate(1000,pass_ttest(titanic_all$survived)))/1000
+```
+
+## Maintaining class ratio
+Using caret
+
+```{r caretsample}
+library(caret)
+rows_train_c<-createDataPartition(titanic_all$survived, p = prop_train, list=FALSE)
+titanic_train_c<-titanic_all[rows_train_c,]
+titanic_test_c<-titanic_all[-rows_train_c,]
+```
+
+### Testing the class ratio
+
+```{r caretrep}
+pass_ttest<-function(x, prop_train = .07){
+  
+  # Sample RowIDs
+  rows_train<-caret::createDataPartition(x, p=prop_train, list=FALSE)
+  
+  t.test(x[rows_train], x[-rows_train], conf.level = .95)$p.value >= .05
+}
+
+sum(replicate(1000,pass_ttest(titanic_all$survived)))/1000
+```
+
+This gives us fewer cases where the class ratio is significantly different between training and sample datasets. Why is it not substantially much higher? Only so many permutations of `r nrow(titanic_all)` rows for sampling - better results over more data.
+
+## Reproducible sampling
+We saw that we can set the seed within in a function to always yield the same value from our sampling process. We need to do this to select our training data so that the results don't shift each time we run the analysis.
+
+## Defensive sampling
+### Final sample
+```{r finalcaretsample}
+library(caret)
+set.seed(8787)
+rows_train_c<-createDataPartition(titanic_all$survived, p = prop_train, list=FALSE)
+titanic_train_c<-titanic_all[rows_train_c,]
+titanic_test_c<-titanic_all[-rows_train_c,]
+```
+
+### Storing a copy (one-off)
+```{r storesampleIDs}
+cache_file<-"../data-processed/sampleIDs.Rdata"
+if(!file.exists(cache_file)){
+  sample_cache<- rows_train_c
+  save(sample_cache,file=cache_file)
+  rm(sample_cache)
+}
+```
+
+
+### Check for changes
+```{r checkforchanges}
+load(cache_file)
+if(!identical(rows_train_c, sample_cache)) stop("Hey, the sample has changed, you should check that out!")
+```
+
+
+

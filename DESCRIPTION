@@ -1,0 +1,14 @@
+Package: step02features
+Title: A Project with Features Work
+Version: 0.1.0
+Authors@R: person("Steph", "Locke",   email="steph@itsalocke.com", role = c("aut", "cre"))
+Description: This shows the feature processing steps for a data project.
+Depends:
+    R (>= 3.1.2),
+    knitr,
+    rmarkdown,
+    packrat
+License: MIT + file LICENSE
+LazyData: true
+VignetteBuilder: knitr
+RoxygenNote: 5.0.1

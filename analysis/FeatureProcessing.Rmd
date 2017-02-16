@@ -1,0 +1,27 @@
+---
+title: "Feature processing"
+author: "Steph Locke"
+date: "15 February 2017"
+output: html_document
+---
+Now that we have our data split into two sections, we can start processing features.
+
+In some cases with strings, if you want to make these a categorical variable, you need to make sure to incorporate levels from both sets of data.
+
+```{r whatstrings}
+stringcols<- sapply(titanic_train_c, is.character)
+titanic_train_c[,stringcols]
+```
+
+```{r processclass}
+convertclass<-function(x){ ordered(x , labels=c("3rd","2nd","1st"), levels=c("3rd","2nd","1st"))}
+titanic_train_c$pclass <- convertclass(titanic_train_c$pclass )
+titanic_test_c$pclass <- convertclass(titanic_test_c$pclass )
+summary(titanic_train_c$pclass)
+summary(titanic_test_c$pclass)
+```
+
+```{r processname}
+titanic_train_c$name <- NULL
+titanic_test_c$name <- NULL
+```

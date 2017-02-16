@@ -1,0 +1,61 @@
+---
+title: "Data collection"
+author: "Steph Locke"
+date: "15 February 2017"
+output: html_document
+---
+
+```{r getdatasetup, include=FALSE}
+library(knitr)
+library(DBI)
+read_chunk("../data-raw/get_data.R")
+```
+
+We're working with data on who survived the Titanic. 
+
+## Source
+We're collecting our data from a SQLite database. The titanic3 data was originally pulled in from the PASWR package and is the third major version of that dataset. It contains more features than the basic titanic dataset available in the datasets package.
+
+```{r makedb}
+library(DBI)
+library(RSQLite)
+titanicdb<-dbConnect(SQLite(),dbname="../data-raw/titanic.sqlite")
+```
+
+## Data
+We're using just a single table of data that has already been collated. Here is a quick overview of the data.
+
+```{r quickdataview}
+titanic_all<-dbReadTable(titanicdb, "titanic")
+knitr::kable(head(titanic_all))
+```
+
+```{r summary}
+knitr::kable(summary(titanic_all))
+```
+
+
+## Defensive stuff
+### Store a copy (one-off)
+```{r cacheresult}
+cache_file<-"../data-raw/rawdatacache.Rdata"
+if(!file.exists(cache_file)) {
+  titanic_cache<-titanic_all
+  save(titanic_cache,file = cache_file)
+  rm(titanic_cache)
+  }
+```
+
+### Check for changes
+```{r checkforchange}
+load(cache_file)
+if(!identical(titanic_all, titanic_cache)) stop("Hey, the data has changed, you should check that out!")
+```
+
+We could change things and rerun with:
+
+```r
+dbWriteTable(titanicdb, "titanic", head(titanic_all), append=TRUE)
+```
+
+Restore your original data with your get_data.R file.

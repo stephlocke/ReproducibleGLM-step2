@@ -1,0 +1,269 @@
+PackratFormat: 1.4
+PackratVersion: 0.4.8.1
+RVersion: 3.3.2
+Repos: CRAN=https://mran.revolutionanalytics.com/snapshot/2016-11-01,
+    CRANextra=http://www.stats.ox.ac.uk/pub/RWin
+
+Package: DBI
+Source: CRAN
+Version: 0.5-1
+Hash: 375869004db963f9915f2b8a49b4a718
+
+Package: MatrixModels
+Source: CRAN
+Version: 0.4-1
+Hash: 60a5c75e57aae4a0ce76cb7422939aaf
+
+Package: PASWR
+Source: CRAN
+Version: 1.1
+Hash: 612b8f379a4b1147c86380d8cf316a1b
+Requires: e1071
+
+Package: RColorBrewer
+Source: CRAN
+Version: 1.1-2
+Hash: c0d56cd15034f395874c870141870c25
+
+Package: RSQLite
+Source: CRAN
+Version: 1.0.0
+Hash: 3df52a54766f420d257debad962146c0
+Requires: DBI
+
+Package: Rcpp
+Source: CRAN
+Version: 0.12.7
+Hash: f0ba7322cfb66f1b563462faa9c2b2ab
+
+Package: RcppEigen
+Source: CRAN
+Version: 0.3.2.9.0
+Hash: 3f0a2179e872b4e0eddfb747b289b7be
+Requires: Rcpp
+
+Package: SparseM
+Source: CRAN
+Version: 1.72
+Hash: adc257a420f61c0a3e4384c6fd8d62ff
+
+Package: assertthat
+Source: CRAN
+Version: 0.1
+Hash: 0afb92b59b02593c70ff8046700ba9d3
+
+Package: base64enc
+Source: CRAN
+Version: 0.1-3
+Hash: c590d29e555926af053055e23ee79efb
+
+Package: bitops
+Source: CRAN
+Version: 1.0-6
+Hash: 67d0775189fd0041d95abca618c5c07e
+
+Package: caTools
+Source: CRAN
+Version: 1.17.1
+Hash: 97cb6f6293cd18d17df77a6383cc6763
+Requires: bitops
+
+Package: car
+Source: CRAN
+Version: 2.1-3
+Hash: 97f6860dc04ba4f513cb2aaf092ce1e7
+Requires: pbkrtest, quantreg
+
+Package: caret
+Source: CRAN
+Version: 6.0-71
+Hash: 4cd5540ee9c4872922c719256be544e8
+Requires: car, foreach, ggplot2, plyr, reshape2
+
+Package: colorspace
+Source: CRAN
+Version: 1.2-7
+Hash: a5cf9920b36c0a171e1b04ffed1ace5a
+
+Package: dichromat
+Source: CRAN
+Version: 2.0-0
+Hash: 08eed0c80510af29bb15f840ccfe37ce
+
+Package: digest
+Source: CRAN
+Version: 0.6.10
+Hash: 87165608ca8aeb0958835c3c5b52b6b7
+
+Package: e1071
+Source: CRAN
+Version: 1.6-7
+Hash: a8b909c7e06f7bfcbdbbad439799e25d
+
+Package: evaluate
+Source: CRAN
+Version: 0.10
+Hash: c3601a10c987d439e0c63ec635234a76
+Requires: stringr
+
+Package: foreach
+Source: CRAN
+Version: 1.4.3
+Hash: cd53ef4cf29dc59ce3f8c5c1af735fd1
+Requires: iterators
+
+Package: formatR
+Source: CRAN
+Version: 1.4
+Hash: b2a47a2b91737978cf50ba95825a9cd1
+
+Package: ggplot2
+Source: CRAN
+Version: 2.1.0
+Hash: 50e297b0191179c39c7dcae0eff72b51
+Requires: digest, gtable, plyr, reshape2, scales
+
+Package: gtable
+Source: CRAN
+Version: 0.2.0
+Hash: cd78381a9d3fea966ac39bd0daaf5554
+
+Package: highr
+Source: CRAN
+Version: 0.6
+Hash: aa3d5b7912b5fed4b546ed5cd2a1760b
+
+Package: htmltools
+Source: CRAN
+Version: 0.3.5
+Hash: 6c7e3a96d9034d3ba8e6a07f7e2a333d
+Requires: Rcpp, digest
+
+Package: iterators
+Source: CRAN
+Version: 1.0.8
+Hash: 488b93c2a4166db0d15f1e8d882cb1d4
+
+Package: jsonlite
+Source: CRAN
+Version: 1.1
+Hash: 86d4b85b84421a4815f1bb4872e30ef4
+
+Package: knitr
+Source: CRAN
+Version: 1.14
+Hash: e7b411f5a5512295a260a45683fa0c4a
+Requires: digest, evaluate, formatR, highr, markdown, stringr, yaml
+
+Package: labeling
+Source: CRAN
+Version: 0.3
+Hash: ecf589b42cd284b03a4beb9665482d3e
+
+Package: lazyeval
+Source: CRAN
+Version: 0.2.0
+Hash: 3d6e7608e65bbf5cb170dab1e3c9ed8b
+
+Package: lme4
+Source: CRAN
+Version: 1.1-12
+Hash: d306e239f525642f2e0d83433e811bd7
+Requires: Rcpp, RcppEigen, minqa, nloptr
+
+Package: magrittr
+Source: CRAN
+Version: 1.5
+Hash: bdc4d48c3135e8f3b399536ddf160df4
+
+Package: markdown
+Source: CRAN
+Version: 0.7.7
+Hash: fea2343a1119d61b0cc5c0a950d103a3
+Requires: mime
+
+Package: mime
+Source: CRAN
+Version: 0.5
+Hash: 463550cf44fb6f0a2359368f42eebe62
+
+Package: minqa
+Source: CRAN
+Version: 1.2.4
+Hash: c6589c93323b465a07618bae6f6ec7ed
+Requires: Rcpp
+
+Package: munsell
+Source: CRAN
+Version: 0.4.3
+Hash: f96d896947fcaf9b6d0074002e9f4f9d
+Requires: colorspace
+
+Package: nloptr
+Source: CRAN
+Version: 1.0.4
+Hash: 8053df240a4635aeb54fc68c6de67709
+
+Package: packrat
+Source: CRAN
+Version: 0.4.8-1
+Hash: 6ad605ba7b4b476d84be6632393f5765
+
+Package: pbkrtest
+Source: CRAN
+Version: 0.4-6
+Hash: 8117c37e2e3078e3c6465134bac6956e
+Requires: lme4
+
+Package: plyr
+Source: CRAN
+Version: 1.8.4
+Hash: ce3897d2ea6dabdb2c0a217b25f5fe99
+Requires: Rcpp
+
+Package: quantreg
+Source: CRAN
+Version: 5.29
+Hash: a06b5a1adfd5068a49e8e960b884d08e
+Requires: MatrixModels, SparseM
+
+Package: reshape2
+Source: CRAN
+Version: 1.4.2
+Hash: 85d9947f8a5e187dff7f18265b96cb13
+Requires: Rcpp, plyr, stringr
+
+Package: rmarkdown
+Source: CRAN
+Version: 1.1
+Hash: d0e9f583d85019c99a171b094979fcb3
+Requires: base64enc, caTools, evaluate, htmltools, jsonlite, knitr,
+    tibble, yaml
+
+Package: scales
+Source: CRAN
+Version: 0.4.0
+Hash: 77b5b5c8ccdef1deb20cf7ffe6e6d06b
+Requires: RColorBrewer, Rcpp, dichromat, labeling, munsell, plyr
+
+Package: stringi
+Source: CRAN
+Version: 1.1.2
+Hash: 1ad6b1cc11d982ac233bf2fa2f7c9684
+
+Package: stringr
+Source: CRAN
+Version: 1.1.0
+Hash: 4d21d0063b37a17ea18eaec6acd29bf3
+Requires: magrittr, stringi
+
+Package: tibble
+Source: CRAN
+Version: 1.2
+Hash: 3857905737a164648031462bed6aa2ef
+Requires: Rcpp, assertthat, lazyeval
+
+Package: yaml
+Source: CRAN
+Version: 2.1.13
+Hash: 4854ccabebc225e8a7309fb4a74980de
