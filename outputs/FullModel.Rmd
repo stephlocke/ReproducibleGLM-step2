@@ -15,5 +15,5 @@ knitr::opts_chunk$set(echo = TRUE)
 ```{r datasampling, child="../analysis/DataSampling.Rmd"}
 ```
 
-```{r datasampling, child="../analysis/FeatureProcessing.Rmd"}
+```{r dataprocessing, child="../analysis/FeatureProcessing.Rmd"}
 ```
